@@ -1,0 +1,12 @@
+{
+  "name": "mainframemint",
+  "version": "1.0.0",
+  "description": "Mainframe-style money math whose engine is a real GnuCOBOL program — compound growth, amortization and savings plans in integer cents",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "precache": "node scripts/gen-precache.mjs",
+    "test": "node --test tests/engine.test.mjs tests/ui.test.mjs"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install || true
+      - name: JS suite (parity vs COBOL goldens + UI gates)
+        run: npm test
+      - name: Compile the GnuCOBOL engine and diff against goldens
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq gnucobol3
+          cobc --version | head -1
+          mkdir -p bin
+          cobc -x -O2 -o bin/mfrun drivers/mfrun.cob engine/mfmcompd.cob engine/mfamort.cob engine/mfsaving.cob
+          ./bin/mfrun < tests/cases.txt > /tmp/cobol_out.txt
+          diff tests/goldens.txt /tmp/cobol_out.txt
+          echo "COBOL binary matches all $(wc -l < tests/goldens.txt) goldens"
+      - name: Secret scan (no private keys committed)
+        run: |
+          ! grep -rInE '(BEGIN (RSA|EC|OPENSSH) PRIVATE KEY|ghp_[A-Za-z0-9]{36}|sk-[A-Za-z0-9]{20,})' . --exclude-dir=.git --exclude-dir=node_modules \
+            || (echo 'potential secret found' && exit 1)
+      - name: Validate manifest JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8')); console.log('manifest ok')"

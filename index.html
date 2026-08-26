@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainframeMint — COBOL money math</title>
+<meta name="description" content="Compound growth, loan amortization and savings plans computed by a real GnuCOBOL program. The COBOL source IS the engine.">
+<meta name="theme-color" content="#0a0f0a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">▚▞</span>
+    <span class="brand-name">MAINFRAME<b>MINT</b></span>
+  </div>
+  <div class="top-controls">
+    <select id="lang" aria-label="Language">
+      <option value="en">EN</option>
+      <option value="pt-BR">PT-BR</option>
+    </select>
+    <select id="currency" aria-label="Currency">
+      <option value="USD">USD</option>
+      <option value="BRL">BRL</option>
+      <option value="EUR">EUR</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 data-i18n="heroTitle">Batch-grade money math.</h1>
+    <p class="hero-sub" data-i18n="heroSub">
+      Compound growth, loan amortization and savings plans — computed by a real
+      GnuCOBOL program, rounded half-away-from-zero at the cent level,
+      the way a mainframe batch posts it.
+    </p>
+    <div class="hero-badges">
+      <span class="chip chip-green" data-i18n="badgeCobol">GnuCOBOL 3.1.2</span>
+      <span class="chip" data-i18n="badgeCents">integer cents</span>
+      <span class="chip" data-i18n="badgeOffline">offline PWA</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="tabs" role="tablist">
+      <button class="tab active" id="tab-compd" role="tab" data-mode="MFCOMPD" data-i18n="modeCompd">Compound</button>
+      <button class="tab" id="tab-amort" role="tab" data-mode="MFAMORT" data-i18n="modeAmort">Loan</button>
+      <button class="tab" id="tab-saving" role="tab" data-mode="MFSAVING" data-i18n="modeSaving">Savings</button>
+    </div>
+
+    <form id="form" autocomplete="off">
+      <label class="field">
+        <span data-i18n="lblMonths">Term (months)</span>
+        <input type="number" id="in-months" min="1" max="1200" step="1" value="120" inputmode="numeric" required>
+      </label>
+      <label class="field">
+        <span id="lbl-principal" data-i18n="lblPrincipal">Initial amount</span>
+        <input type="number" id="in-cents" min="0" step="0.01" value="1000.00" inputmode="decimal" required>
+      </label>
+      <label class="field">
+        <span data-i18n="lblRate">Annual rate (%)</span>
+        <input type="number" id="in-rate" min="0" max="150" step="0.01" value="7.00" inputmode="decimal" required>
+      </label>
+      <label class="field hidden" id="field-mcent">
+        <span id="lbl-mcent" data-i18n="lblPayment">Monthly payment</span>
+        <input type="number" id="in-mcent" min="0" step="0.01" value="10.00" inputmode="decimal">
+      </label>
+      <button type="submit" class="run" id="run" data-i18n="btnRun">▶ SUBMIT JOB</button>
+    </form>
+    <p class="err hidden" id="err" role="alert"></p>
+  </section>
+
+  <section class="panel hidden" id="result-panel" aria-live="polite">
+    <h2 class="panel-title" data-i18n="resTitle">SYSOUT</h2>
+    <div id="results"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title" data-i18n="logTitle">Console log</h2>
+    <pre id="log" class="log"></pre>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title" data-i18n="histTitle">Job history</h2>
+    <div id="history" class="history"></div>
+    <button class="ghost" id="clear-hist" data-i18n="btnClear">Clear history</button>
+  </section>
+
+  <section class="about">
+    <h2 data-i18n="whyTitle">Why COBOL?</h2>
+    <p data-i18n="whyBody">
+      COBOL still moves trillions every day, and its fixed-point decimal
+      arithmetic is exactly right for money: no float drift, ever. This demo
+      ships the actual compiled program's behavior — same rounding rule,
+      same integer-cents ledger discipline your bank's batch window uses.
+    </p>
+    <a class="srclink" href="https://github.com/chr-z/mainframemint/blob/main/engine/mfmcompd.cob" target="_blank" rel="noopener" data-i18n="srcLink">Read the COBOL engine source →</a>
+  </section>
+</main>
+
+<footer>
+  <span data-i18n="footer">MainframeMint — built by @chr-z</span>
+  <span class="foot-dim" id="engine-tag">engine: mfmcompd/mfamort/mfsaving</span>
+</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

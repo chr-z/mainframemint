@@ -1,0 +1,11 @@
+{
+  "name": "MainframeMint",
+  "short_name": "MainframeMint",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#060906",
+  "theme_color": "#0a0f0a",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
