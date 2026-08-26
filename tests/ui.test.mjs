@@ -57,7 +57,7 @@ test("precache generation covers the site assets (idempotent)", () => {
   execSync("node scripts/gen-precache.mjs", { cwd: ROOT });
   execSync("node scripts/gen-precache.mjs", { cwd: ROOT });
   const sw = read("sw.js");
-  assert.match(sw, /const CACHE_VERSION = "__MM_CACHE_VERSION__";/);
+  assert.match(sw, /const CACHE_VERSION = '__MM_CACHE_VERSION__';/);
   for (const asset of ["index.html", "style.css", "manifest.json", "assets/icon.svg", "js/app.js", "js/mmcore.mjs", "sw.js"]) {
     assert.ok(sw.includes(`"${asset}"`), `precache missing ${asset}`);
   }
