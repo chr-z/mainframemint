@@ -1,7 +1,9 @@
 /* MainframeMint — offline-first PWA. Precache list injected at build time;
  * __MM_CACHE_VERSION__ is stamped with the deploy SHA by the Pages workflow. */
-const CACHE_VERSION = "__MM_CACHE_VERSION__";
+const CACHE_VERSION = '__MM_CACHE_VERSION__';
 const PRECACHE = [
+   ".gitattributes",
+   ".gitignore",
    "LICENSE",
    "README.md",
    "assets/icon.svg",
